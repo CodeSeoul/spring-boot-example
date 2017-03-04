@@ -3,6 +3,8 @@ package org.learnteachcode.seoul.springboot.pokemon;
 import lombok.Builder;
 import lombok.Getter;
 
+import java.util.List;
+
 @Builder
 @Getter
 public class Pokemon {
@@ -10,5 +12,5 @@ public class Pokemon {
     private String name;
     private String type;
     private String color;
-    private String nextEvolution;
+    private List<Pokemon> nextEvolution; // List == a generic collection
 }
