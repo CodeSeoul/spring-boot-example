@@ -16,7 +16,10 @@ public class PokemonController {
 
     @RequestMapping("/pokemon")
     public List<Pokemon> getAllPokemon(
-            @RequestParam(name = "name") String pokemonName) {
+            @RequestParam(name = "name", defaultValue = "all")
+            String pokemonName) {
+        if(pokemonName.equals("all"))
+            return repository.findAll();
         return repository.findByName(pokemonName);
     }
 

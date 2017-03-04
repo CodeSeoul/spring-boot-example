@@ -7,4 +7,5 @@ import java.util.List;
 public interface PokemonRepository extends
         CrudRepository<Pokemon, Long>{
     List<Pokemon> findByName(String name);
+    List<Pokemon> findAll();
 }
