@@ -1,13 +1,13 @@
 package org.learnteachcode.seoul.springboot.pokemon;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.learnteachcode.seoul.springboot.pokemon.type.Type;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -21,15 +21,37 @@ public class Pokemon {
 
     private int level;
     private String name;
-    private String type;
     private String color;
-    //private List<Pokemon> nextEvolution; // List == a generic collection
+
+    @ManyToMany
+    @JoinTable(
+            name = "pokemon_type",
+            joinColumns = @JoinColumn(name = "pokemon_id", referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name = "type_id", referencedColumnName = "id")
+    )
+    List<Type> types;
+
+    @JsonIgnore
+    @OneToOne
+    private Pokemon challenger;
+
+    @JsonIgnore
+    @OneToOne(mappedBy = "challenger")
+    private Pokemon challengedBy;
 
     @Builder
-    private Pokemon(int level, String name, String type, String color) {
+    private Pokemon(int level,
+                    String name,
+                    String color,
+                    Pokemon challenger,
+                    List<Type> types) {
         this.color = color;
         this.name = name;
-        this.type = type;
         this.level = level;
+        this.challenger = challenger;
+        if(types == null)
+            this.types = new ArrayList<>();
+        else
+            this.types = types;
     }
 }
